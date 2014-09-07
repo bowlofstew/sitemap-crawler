@@ -2,21 +2,15 @@ cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 project (sitemap-crawler)
 enable_testing()
 include(ExternalProject)
-
 ExternalProject_Add(
-  chromium-net
-  GIT_REPOSITORY https://chromium.googlesource.com/chromium/src/net
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/chromium/net
-  PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/chromium/net
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR}
-  TMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}//tmp/chromium/net
-  STAMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}//stamp/chromium/net
-  LOG_DOWNLOAD 1
-  LOG_UPDATE 1
-  LOG_CONFIGURE 1
-  LOG_BUILD 1
-  LOG_TEST 1
-  LOG_INSTALL 1
+  cpp-netlib
+  GIT_REPOSITORY https://github.com/cpp-netlib/cpp-netlib.git
+  GIT_TAG cpp-netlib-0.11.0-final
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/netlib
+  PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/netlib
+  TMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tmp/netlib
+  STAMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stamp/netlib
+  BUILD_IN_SOURCE 1
 )
 
 ExternalProject_Add(
@@ -61,6 +55,7 @@ find_package(Boost REQUIRED COMPONENTS
 	date_time
 	system
 	program_options
+	thread
 )
 
 add_definitions (-DBoost_USE_STATIC_LIBS=ON)
