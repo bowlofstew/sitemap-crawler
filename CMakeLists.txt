@@ -3,6 +3,44 @@ project (sitemap-crawler)
 enable_testing()
 include(ExternalProject)
 
+ExternalProject_Add(
+  chromium-net
+  GIT_REPOSITORY https://chromium.googlesource.com/chromium/src/net
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/chromium/net
+  PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/chromium/net
+  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR}
+  TMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}//tmp/chromium/net
+  STAMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}//stamp/chromium/net
+  LOG_DOWNLOAD 1
+  LOG_UPDATE 1
+  LOG_CONFIGURE 1
+  LOG_BUILD 1
+  LOG_TEST 1
+  LOG_INSTALL 1
+)
+
+ExternalProject_Add(
+    googletest
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/gtest
+    SVN_REPOSITORY http://googletest.googlecode.com/svn/trunk/
+    SVN_REVISION -r 690
+    TIMEOUT 10
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+               -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=DebugLibs
+               -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=ReleaseLibs
+               -Dgtest_force_shared_crt=ON
+    INSTALL_COMMAND ""
+    TMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tmp/gtest
+    STAMP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stamp/gtest
+    LOG_DOWNLOAD 1
+    LOG_UPDATE 1
+    LOG_CONFIGURE 1
+    LOG_BUILD 1
+    LOG_TEST 1
+    LOG_INSTALL 1
+    BUILD_IN_SOURCE 1
+)
+
 if(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 endif()
@@ -27,4 +65,5 @@ find_package(Boost REQUIRED COMPONENTS
 
 add_definitions (-DBoost_USE_STATIC_LIBS=ON)
 add_subdirectory(src)
+add_subdirectory(inc)
 add_subdirectory(test)

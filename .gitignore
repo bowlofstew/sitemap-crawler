@@ -21,3 +21,10 @@
 *.app
 
 .idea
+
+*.cmake
+stamp
+tmp
+build
+
+thirdparty
